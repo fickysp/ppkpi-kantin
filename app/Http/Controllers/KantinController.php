@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\User;
@@ -29,31 +30,37 @@ class KantinController extends Controller
 
 
     public function pesan(Request $request)
-    {
-        $request->validate([
-            'menu_id' => 'required|exists:menus,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        $menu = Menu::find($request->menu_id);
-        $pesananPending = Pesanan::where('user_id', auth()->id())
-            ->where('status', 'pending')
-            ->first();
-
-        $invoice = $pesananPending ? $pesananPending->invoice : "TRS#" . auth()->id() . "_" . time();
-
-        // Buat pesanan baru
-        $pesanan = new Pesanan();
-        $pesanan->menu_id = $menu->id;
-        $pesanan->user_id = auth()->id();
-        $pesanan->quantity = $request->quantity;
-        $pesanan->total_price = $menu->harga * $request->quantity;
-        $pesanan->invoice = $invoice;
-        $pesanan->status = 'pending'; // Atur status menjadi "pending"
-        $pesanan->save();
-
-        return redirect()->route('account.show', auth()->id())->with('success', 'Pesanan berhasil ditambahkan');
+{
+    // Pastikan pengguna sudah login
+    if (!auth()->check()) {
+        return redirect()->route('auth')->with('error', 'Silakan login terlebih dahulu untuk membuat pesanan.');
     }
+
+    $request->validate([
+        'menu_id' => 'required|exists:menus,id',
+        'quantity' => 'required|integer|min:1',
+    ]);
+
+    $menu = Menu::find($request->menu_id);
+    $pesananPending = Pesanan::where('user_id', auth()->id())
+        ->where('status', 'pending')
+        ->first();
+
+    $invoice = $pesananPending ? $pesananPending->invoice : "TRS#" . auth()->id() . "_" . time();
+
+    // Buat pesanan baru
+    $pesanan = new Pesanan();
+    $pesanan->menu_id = $menu->id;
+    $pesanan->user_id = auth()->id();
+    $pesanan->quantity = $request->quantity;
+    $pesanan->total_price = $menu->harga * $request->quantity;
+    $pesanan->invoice = $invoice;
+    $pesanan->status = 'pending'; // Atur status menjadi "pending"
+    $pesanan->save();
+
+    return redirect()->route('account.show', auth()->id())->with('success', 'Pesanan berhasil ditambahkan');
+}
+
 
     public function beli(Request $request)
     {

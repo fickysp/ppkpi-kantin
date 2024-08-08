@@ -12,19 +12,32 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-<body style="background-color: #e2e2e2; font-family: 'Poppins ', sans-serif;">
+<body style="background-image: url('{{ asset('img/Teks paragraf Anda.png') }}'); font-family: 'Poppins ', sans-serif;">
 
     <div class="container mt-5">
+
         <div class="row justify-content-center">
             <div class="col-lg-5">
                 <div class="card o-hidden rounded shadow-lg my-5">
                     <div class="card-body p-0">
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        @if (Session::has('success'))
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <ul>
+                                    <li>{{ Session::get('success') }}</li>
+                                </ul>
+                            </div>
+                        @endif
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4 font-weight-bold">Sign Up</h1>
+                                        <h1 class="h4 text-gray-900 mb-4 font-weight-bold">Registrasi</h1>
                                     </div>
                                     <form method="post" action="{{ route('register') }}"
                                         class="register100-form validate-form">
@@ -40,6 +53,11 @@
                                                 </ul>
                                             </div>
                                         @endif
+                                        @if (Session::get('error'))
+                                            <div class="alert alert-danger">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
                                         @if (Session::get('success'))
                                             <div class="alert alert-success alert-dismissible fade show">
                                                 <ul>
@@ -47,7 +65,7 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        
+
                                         <div class="form-group mb-3">
                                             <input type="text" class="form-control" id="fullname" name="fullname"
                                                 placeholder="fullname">
@@ -68,8 +86,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center mt-2" style="font-size: 14px;">
-                                        sudah punya akun? <a href="{{ route('auth') }}"
-                                            class="small">Login</a>
+                                        sudah punya akun? <a href="{{ route('auth') }}" class="small">Login</a>
                                     </div>
                                 </div>
                             </div>

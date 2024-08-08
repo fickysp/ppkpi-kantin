@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-<body style="background-color: #e2e2e2; font-family: 'Poppins ', sans-serif;">
+<body style="background-image: url('{{ asset('img/Teks paragraf Anda.png') }}'); font-family: 'Poppins ', sans-serif;">
 
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-lg-5">
                 <div class="card o-hidden rounded shadow-lg my-5">
                     <div class="card-body p-0">
+
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg">
@@ -41,6 +42,11 @@
                                                 </ul>
                                             </div>
                                         @endif
+                                        @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
                                         @if (Session::get('success'))
                                             <div class="alert alert-success alert-dismissible fade show">
                                                 <ul>
@@ -48,7 +54,6 @@
                                                 </ul>
                                             </div>
                                         @endif
-
                                         <div class="form-group mb-3">
                                             <input type="text" class="form-control" id="email" name="email"
                                                 value="{{ old('email') }}" placeholder="Email">
@@ -61,8 +66,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center mt-2" style="font-size: 14px;">
-                                        belum punya akun? <a href="{{ route('register') }}"
-                                            class="small">Sign Up</a>
+                                        belum punya akun? <a href="{{ route('register') }}" class="small">Registrasi</a>
                                     </div>
                                 </div>
                             </div>
@@ -78,4 +82,5 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </body>
+
 </html>

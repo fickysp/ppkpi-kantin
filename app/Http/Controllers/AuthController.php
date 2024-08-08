@@ -66,6 +66,7 @@ class AuthController extends Controller
             'email.required' => 'Email Harus Diisi',
             'email.unique' => 'Email Telah Terdaftar',
             'password.required' => 'Password Wajib Diisi',
+            'no_hp.required' => 'Nomor Hp Wajib Diisi',
         ]);
 
         //buat simpan ke database
@@ -79,6 +80,7 @@ class AuthController extends Controller
 
         return redirect()->route('auth')->with('success', 'Silahkan Login');
     }
+    
 
     public function logout()
     {

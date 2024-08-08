@@ -47,15 +47,15 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="{{ route('account.show', ['id' => Auth::id()]) }}"
+                        <a href="{{ route('home') }}"
                             class="nav-item nav-link active">Home</a>
-                        <a href="{{ route('trans', ['id' => Auth::id()]) }}" class="nav-item nav-link">Transaksi</a>
+                        <a href="{{ route('auth') }}" class="nav-item nav-link">Transaksi</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Laporan</a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <a href="{{ route('laporanU.bank', ['id' => Auth::id()]) }}"
+                                <a href="{{ route('auth') }}"
                                     class="dropdown-item">Laporan Transaksi</a>
-                                <a href="{{ route('laporanU.kantin', ['id' => Auth::id()]) }}"
+                                <a href="{{ route('auth') }}"
                                     class="dropdown-item">Laporan Check Out</a>
                             </div>
                         </div>
@@ -64,11 +64,12 @@
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="{{route('keranjang')}}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{$jumlahPesanan}}</span>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">0</span>
                         </a>
-                        <a href="#" class="my-auto">
-                            <i class="fas fa-user fa-2x"></i>
-                            <div class="nav-item dropdown no-arrow none" style="text-decoration: none">
+                        <a href="{{route('auth')}}" class="my-auto">
+                            <i class="fas fa-user fa-2x"><button class="btn btn-outline-primary m-2 px-3">Login</button></i>
+
+                            {{-- <div class="nav-item dropdown no-arrow none" style="text-decoration: none">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @auth
@@ -84,10 +85,7 @@
                                         Logout
                                     </a>
                                 </div>
-                            </div>
-                        </a>
-                        <a href="{{route('trans', ['id' => Auth::id()])}}" class="position-relative me-4 my-auto">
-                            <span class="">Rp. {{ number_format(auth()->user()->balance)}}-,</span>
+                            </div> --}}
                         </a>
 
                     </div>

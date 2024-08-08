@@ -8,13 +8,15 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 //route awal ketika mengakses webz
-Route::get('/', [AuthController::class, 'index'])->name('auth');
+Route::get('/', [UserController::class, 'home'])->name('home');
 
 //route auth
 Route::get('/login', [AuthController::class, 'index'])->name('auth');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/registrasi', [AuthController::class, 'create'])->name('register');
 Route::post('/registrasi', [AuthController::class, 'register']);
+Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+
 
 //route user
 Route::get('/user/dashboard/{id}', [UserController::class, 'show'])->name('account.show');

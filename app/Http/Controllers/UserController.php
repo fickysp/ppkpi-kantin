@@ -16,6 +16,11 @@ class UserController extends Controller
         return view('user.index', compact('menu', 'jumlahPesanan'));
 
     }
+    public function home(){
+        $menu = Menu::latest()->simplePaginate(10);
+        return view('frontpage.index', compact('menu'));
+
+    }
     public function show($id)
     {
         $user = User::findOrFail($id);
