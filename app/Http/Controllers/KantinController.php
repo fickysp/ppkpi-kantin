@@ -30,36 +30,54 @@ class KantinController extends Controller
 
 
     public function pesan(Request $request)
-{
-    // Pastikan pengguna sudah login
-    if (!auth()->check()) {
-        return redirect()->route('auth')->with('error', 'Silakan login terlebih dahulu untuk membuat pesanan.');
+    {
+        // Pastikan pengguna sudah login
+        if (!auth()->check()) {
+            return redirect()->route('auth')->withErrors(['error' => 'Silakan login terlebih dahulu untuk membuat pesanan.']);
+        }
+
+        // Validasi input
+        $request->validate([
+            'menu_id' => 'required|exists:menus,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $menu = Menu::find($request->menu_id);
+        $userId = auth()->id();
+
+        // Temukan pesanan pending yang sama
+        $pesananPending = Pesanan::where('user_id', $userId)
+            ->where('status', 'pending')
+            ->where('menu_id', $menu->id)
+            ->first();
+
+        if ($pesananPending) {
+            // Jika pesanan sudah ada, tambahkan kuantitas dan update harga total
+            $pesananPending->quantity += $request->quantity;
+            $pesananPending->total_price = $pesananPending->quantity * $menu->harga;
+            $pesananPending->save();
+
+            return redirect()->route('account.show', $userId)->with('success', 'Jumlah pesanan berhasil diperbarui');
+        } else {
+            // Jika pesanan belum ada, buat pesanan baru
+            $invoice = Pesanan::where('user_id', $userId)
+                ->where('status', 'pending')
+                ->exists() ? Pesanan::where('user_id', $userId)->where('status', 'pending')->first()->invoice : "TRS#" . $userId . "_" . time();
+
+            $pesanan = new Pesanan();
+            $pesanan->menu_id = $menu->id;
+            $pesanan->user_id = $userId;
+            $pesanan->quantity = $request->quantity;
+            $pesanan->total_price = $menu->harga * $request->quantity;
+            $pesanan->invoice = $invoice;
+            $pesanan->status = 'pending'; // Atur status menjadi "pending"
+            $pesanan->save();
+
+            return redirect()->route('account.show', $userId)->with('success', 'Pesanan berhasil ditambahkan');
+        }
     }
 
-    $request->validate([
-        'menu_id' => 'required|exists:menus,id',
-        'quantity' => 'required|integer|min:1',
-    ]);
 
-    $menu = Menu::find($request->menu_id);
-    $pesananPending = Pesanan::where('user_id', auth()->id())
-        ->where('status', 'pending')
-        ->first();
-
-    $invoice = $pesananPending ? $pesananPending->invoice : "TRS#" . auth()->id() . "_" . time();
-
-    // Buat pesanan baru
-    $pesanan = new Pesanan();
-    $pesanan->menu_id = $menu->id;
-    $pesanan->user_id = auth()->id();
-    $pesanan->quantity = $request->quantity;
-    $pesanan->total_price = $menu->harga * $request->quantity;
-    $pesanan->invoice = $invoice;
-    $pesanan->status = 'pending'; // Atur status menjadi "pending"
-    $pesanan->save();
-
-    return redirect()->route('account.show', auth()->id())->with('success', 'Pesanan berhasil ditambahkan');
-}
 
 
     public function beli(Request $request)
@@ -69,7 +87,7 @@ class KantinController extends Controller
         $totalHarga = Pesanan::whereIn('id', $pesananIds)->sum('total_price');
 
         if ($user->balance < $totalHarga) {
-            return redirect()->route('account.show', auth()->id())->with('error', 'Saldo tidak mencukupi');
+            return redirect()->route('account.show', auth()->id())->with('error', 'Saldo tidak mencukupi silahkan Top Up dahulu');
         }
 
         // Mengurangi jumlah stok setiap menu yang dibeli

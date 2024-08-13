@@ -22,7 +22,7 @@
                                 <input type="number" class="form-control" name="quantity" placeholder="Jumlah Pesanan"
                                     required>
                             </div>
-                            <button type="submit" onclick="sweetalert()"
+                            <button type="submit"
                                 class="btn border border-secondary rounded-pill text-primary mt-2 align-items-right">
                                 <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
                             </button>

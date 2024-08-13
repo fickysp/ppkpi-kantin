@@ -14,6 +14,13 @@
                             {{ session('error') }}
                         </div>
                     @endif
+                    @if (Session::get('success'))
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <ul>
+                                <li>{{ Session::get('success') }}</li>
+                            </ul>
+                        </div>
+                    @endif
                     <h2 class="mt-3">Barang yang Dipilih</h2>
                     @if (isset($pesanan[0]))
                         <h5>Invoice: {{ $pesanan[0]->invoice }}</h5>
