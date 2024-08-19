@@ -56,15 +56,20 @@
                                 <a href="{{ route('laporanU.bank', ['id' => Auth::id()]) }}"
                                     class="dropdown-item">Laporan Transaksi</a>
                                 <a href="{{ route('laporanU.kantin', ['id' => Auth::id()]) }}"
-                                    class="dropdown-item">Laporan Check Out</a>
+                                    class="dropdown-item">Laporan Pembelian</a>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                        <a href="{{route('keranjang')}}" class="position-relative me-4 my-auto">
+                        <button
+                            class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
+                            data-bs-toggle="modal" data-bs-target="#searchModal"><i
+                                class="fas fa-search text-primary"></i></button>
+                        <a href="{{ route('keranjang') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{$jumlahPesanan}}</span>
+                            <span
+                                class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+                                style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ $jumlahPesanan }}</span>
                         </a>
                         <a href="#" class="my-auto">
                             <i class="fas fa-user fa-2x"></i>
@@ -79,15 +84,16 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <a class="dropdown-item" href="#" data-toggle="modal"
+                                        data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Logout
                                     </a>
                                 </div>
                             </div>
                         </a>
-                        <a href="{{route('trans', ['id' => Auth::id()])}}" class="position-relative me-4 my-auto">
-                            <span class="">Rp. {{ number_format(auth()->user()->balance)}}-,</span>
+                        <a href="{{ route('trans', ['id' => Auth::id()]) }}" class="position-relative me-4 my-auto">
+                            <span class="">Rp. {{ number_format(auth()->user()->balance) }}-,</span>
                         </a>
 
                     </div>
@@ -129,7 +135,8 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-item">
                         <h4 class="text-light mb-3">Why People Like us!</h4>
-                        <p class="mb-4">Website yang berguna untuk mempermudah dalam akses belanja produk di kantin, pembayaran tanpa ribet tinggal pesan lalu pesananmu akan dibuat.</p>
+                        <p class="mb-4">Website yang berguna untuk mempermudah dalam akses belanja produk di kantin,
+                            pembayaran tanpa ribet tinggal pesan lalu pesananmu akan dibuat.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -172,7 +179,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Kantin Digital | Demo</a>, All right reserved.</span>
+                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Kantin
+                            Digital | Demo</a>, All right reserved.</span>
                 </div>
                 <div class="col-md-6 my-auto text-center text-md-end text-white">
                     <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
@@ -199,13 +207,13 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ingin Logout?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">Pilih Logout untuk keluar.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" href="{{ route('logout') }}">Logout</a>
                 </div>
             </div>
         </div>

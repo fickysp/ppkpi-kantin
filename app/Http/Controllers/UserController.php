@@ -10,16 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $menu = Menu::latest()->simplePaginate(10);
         $jumlahPesanan = Pesanan::where('status', 'pending')->count();
         return view('user.index', compact('menu', 'jumlahPesanan'));
-
     }
-    public function home(){
+
+    public function home()
+    {
         $menu = Menu::latest()->simplePaginate(10);
         return view('frontpage.index', compact('menu'));
-
     }
     public function show($id)
     {
@@ -31,37 +32,35 @@ class UserController extends Controller
         return view('user.index', compact('user', 'menu', 'jumlahPesanan', 'transaksis'));
     }
 
-
-
     public function search(Request $request)
-{
-    $kategori = $request->input('category', 'semua'); // Ambil kategori dari request
+    {
+        $kategori = $request->input('category', 'semua'); // Ambil kategori dari request
 
-    // Validasi kategori
-    $allowedCategories = ['semua', 'makanan', 'minuman', 'peralatan'];
+        // Validasi kategori
+        $allowedCategories = ['semua', 'makanan', 'minuman', 'peralatan'];
 
-    if (!in_array($kategori, $allowedCategories)) {
-        return response()->json(['error' => 'Kategori tidak valid.'], 400);
+        if (!in_array($kategori, $allowedCategories)) {
+            return response()->json(['error' => 'Kategori tidak valid.'], 400);
+        }
+
+        // Query produk berdasarkan kategori
+        $query = Menu::query();
+        if ($kategori != 'semua') {
+            $query->where('kategori', $kategori);
+        }
+        $menus = $query->get();
+
+        if ($request->ajax()) {
+            // Kembalikan partial view jika permintaan AJAX
+            return view('partials.product-list', compact('menus'))->render();
+        }
+
+        // Untuk permintaan non-AJAX, bisa menambahkan logika lain jika diperlukan
+        $jumlahPesanan = Pesanan::where('status', 'pending')->count();
+        $user = User::findOrFail(auth()->id());
+
+        return view('partials.product-list', compact('user', 'menus', 'jumlahPesanan'));
     }
-
-    // Query produk berdasarkan kategori
-    $query = Menu::query();
-    if ($kategori != 'semua') {
-        $query->where('kategori', $kategori);
-    }
-    $menus = $query->get();
-
-    if ($request->ajax()) {
-        // Kembalikan partial view jika permintaan AJAX
-        return view('partials.product-list', compact('menus'))->render();
-    }
-
-    // Untuk permintaan non-AJAX, bisa menambahkan logika lain jika diperlukan
-    $jumlahPesanan = Pesanan::where('status', 'pending')->count();
-    $user = User::findOrFail(auth()->id());
-
-    return view('partials.product-list', compact('user', 'menus', 'jumlahPesanan'));
-}
 
 
     public function trans(Request $request, $id)
@@ -86,6 +85,15 @@ class UserController extends Controller
         return view('user.laporan_bank', compact('user', 'jumlahPesanan', 'transaksis'));
     }
 
+    public function cetakTransaksi($id)
+    {
+        $user = User::findOrFail($id);
+        $jumlahPesanan = Pesanan::where('status', 'pending')->count();
+        $transaksis = $user->transaksi()->where('status', 'Disetujui')->get();
+
+        return view('user.cetak-transaksi', compact('user', 'jumlahPesanan', 'transaksis'));
+    }
+
     public function laporanPembelian($id)
     {
         $user = User::findOrFail($id);
@@ -98,6 +106,20 @@ class UserController extends Controller
             ->simplePaginate(10);
 
         return view('user.laporan_kantin', compact('user', 'historiPesanan', 'jumlahPesanan'));
+    }
+
+    public function cetakPembelian($id)
+    {
+        $user = User::findOrFail($id);
+        $jumlahPesanan = Pesanan::where('status', 'pending')->count();
+        $historiPesanan = $user->pesanan()
+            ->selectRaw('MAX(id) as id, invoice, MAX(status) as status, SUM(total_price) as total_price, MAX(created_at) as created_at')
+            ->where('status', 'Disetujui')
+            ->groupBy('invoice')
+            ->latest()
+            ->get();
+
+        return view('user.cetak-pembelian', compact('user', 'historiPesanan', 'jumlahPesanan'));
     }
 
     public function keranjang()

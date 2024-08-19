@@ -3,18 +3,18 @@
 
     <body>
         <div class="container-fluid">
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if (Session::has('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-                <ul>
-                    <li>{{ Session::get('success') }}</li>
-                </ul>
-            </div>
-        @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            @if (Session::has('success'))
+                <div class="alert alert-success alert-dismissible fade show">
+                    <ul>
+                        <li>{{ Session::get('success') }}</li>
+                    </ul>
+                </div>
+            @endif
             <div class="row mb-2">
                 <div class="col-xl-3 col-md-6">
                     <div class="card border-left-primary shadow h-100 py-2">
@@ -56,8 +56,8 @@
             <h2 class="font-weight-bold mt-4" style="color:black">Daftar Menu</h2>
             <div class="row mt-2">
                 @foreach ($menu as $menus)
-                    <div class="card col-md-2 m-2 mb-4 shadow">
-                        <div class="card card-img mt-3"> 
+                    <div class="card col-md-3 m-2 mb-4 shadow">
+                        <div class="card card-img mt-3">
                             <img src="{{ asset('/storage/menus/' . $menus->image) }}" height="150px">
                         </div>
                         <div class="card-body">

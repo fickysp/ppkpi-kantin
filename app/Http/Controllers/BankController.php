@@ -24,6 +24,13 @@ class BankController extends Controller
         return view('bank.laporan', compact('user', 'acc'));
     }
 
+    public function cetakLaporanBank()
+    {
+        $acc = Transaksi::where('status', 'Disetujui')->latest()->simplePaginate(10);
+        $user = User::all();
+        return view('bank.cetak-laporan-bank', compact('user', 'acc'));
+    }
+
 
     public function transaksi(Request $request)
     {

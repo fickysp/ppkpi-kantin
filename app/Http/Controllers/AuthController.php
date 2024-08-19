@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
@@ -46,7 +47,8 @@ class AuthController extends Controller
                 } else if ($userRole === 'kantin') {
                     return redirect()->route('kantin')->with('success', 'Selamat datang Kantin');
                 } else if ($userRole === 'user') {
-                    return redirect()->route('account.show', ['id' => Auth::id()])->with('success', 'Selamat datang,' . Auth::user()->fullname);
+                    Alert::success('Welcome', 'Selamat datang' . Auth::user()->fullname);
+                    return redirect()->route('account.show', ['id' => Auth::id()])->with('success', 'Selamat datang, ' . Auth::user()->fullname);
                 }
             }
         }
@@ -80,7 +82,7 @@ class AuthController extends Controller
 
         return redirect()->route('auth')->with('success', 'Silahkan Login');
     }
-    
+
 
     public function logout()
     {

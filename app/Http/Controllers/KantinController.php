@@ -25,7 +25,18 @@ class KantinController extends Controller
             ->groupBy('invoice')
             ->latest()
             ->simplePaginate(10);
-        return view('kantin.laporan', compact('laporan'));
+        $user = User::get();
+        return view('kantin.laporan', compact('laporan', 'user'));
+    }
+    public function cetakLaporanKantin()
+    {
+        $laporan = Pesanan::selectRaw('MAX(id) as id,MAX(user_id) as user_id, invoice, MAX(status) as status, SUM(total_price) as total_price, MAX(created_at) as created_at')
+            ->where('status', 'Disetujui')
+            ->groupBy('invoice')
+            ->latest()
+            ->simplePaginate(10);
+        $user = User::get();
+        return view('kantin.cetak-laporan-kantin', compact('laporan', 'user'));
     }
 
 

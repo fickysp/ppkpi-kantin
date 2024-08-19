@@ -68,15 +68,15 @@
 
                                         <div class="form-group mb-3">
                                             <input type="text" class="form-control" id="fullname" name="fullname"
-                                                placeholder="fullname">
+                                                placeholder="Masukan Fullname">
                                         </div>
                                         <div class="form-group mb-3">
                                             <input type="text" class="form-control" id="email" name="email"
-                                                value="{{ old('email') }}" placeholder="Email">
+                                                value="{{ old('email') }}" placeholder="Masukan Email">
                                         </div>
                                         <div class="form-group mb-3">
                                             <input type="password" class="form-control" id="password" name="password"
-                                                placeholder="Password">
+                                                placeholder="Masukan Password">
                                         </div>
                                         <div class="form-group mb-3">
                                             <input type="number" class="form-control" id="no_hp" name="no_hp"

@@ -13,6 +13,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Id User</th>
+                                <th>Nama User</th>
                                 <th>Jumlah</th>
                                 <th>Jenis Transaksi</th>
                                 <th>Status</th>
@@ -24,6 +25,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $transaksi->users_id }}</td>
+                                    <td>{{ $transaksi->user->fullname }}</td>
                                     <td> Rp. {{ number_format($transaksi->amount) }}</td>
                                     <td> {{ $transaksi->type }}</td>
                                     <td> {{ $transaksi->status }}</td>
